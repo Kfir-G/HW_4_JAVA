@@ -2,6 +2,8 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.util.Random;
 import javax.swing.JPanel;
+import java.awt.event;
+import java.awt.event.MouseAdapter;
 /**
  * This Class implements the state and behaviour of DrawPanel infrastructure.
  * It inherits from JPanel class.
@@ -109,5 +111,13 @@ public class DrawPanel extends JPanel
 
         for(MyShape myShape : shapes)
             myShape.draw(g);
+    }
+
+    public class MouseHandler extends MouseAdapter implements MouseMotionListener 
+    {
+        public void MouseMotionListener()
+        {
+            
+        }
     }
 }
