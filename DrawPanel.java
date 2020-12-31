@@ -7,7 +7,7 @@ import java.awt.event.MouseAdapter;
  * This Class implements the state and behaviour of DrawPanel infrastructure.
  * It inherits from JPanel class.
  */
-public class DrawPanel extends JPanel
+public class DrawPanel extends DrawFrame
 {
     /* shapes values:
     0 = MyLine
@@ -17,7 +17,7 @@ public class DrawPanel extends JPanel
 
     private String statusText; //String containing shape statistic information
 
-    private Random randomNumbers = new Random();
+    //private Random randomNumbers = new Random();
 
     //-------data fields------
     private MyShape [] shapes; //array containing all shapes
@@ -105,11 +105,20 @@ public class DrawPanel extends JPanel
      * draw every shape in shapes array
      */   
     public void paintComponent(Graphics g)
-    {
+    {   //1-22:00
        super.paintComponent(g);
 
         for(MyShape myShape : shapes)
             myShape.draw(g);
+    }
+
+    public void clearDraw()
+    {
+        repaint();
+    }
+    public void BtnUndo()
+    {
+
     }
 
     /*public class MouseHandler extends MouseAdapter implements MouseMotionListener 
