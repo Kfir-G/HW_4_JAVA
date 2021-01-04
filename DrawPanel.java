@@ -1,27 +1,30 @@
-import java.awt.Color;
-import java.awt.Graphics;
-import java.util.Random;
-import javax.swing.JPanel;
-import java.awt.event.MouseAdapter;
+import java.awt.*;
+import java.util.*;
+import javax.swing.*;
+
 /**
  * This Class implements the state and behaviour of DrawPanel infrastructure.
  * It inherits from JPanel class.
  */
 public class DrawPanel extends DrawFrame
 {
-    /* shapes values:
-    0 = MyLine
-    1 = MyOval
-    2 = MyRectangle
-    */
+    final static int numberOfShapes = 100; //100 is a default number of maxium shapes
 
     private String statusText; //String containing shape statistic information
 
-    //private Random randomNumbers = new Random();
-
     //-------data fields------
-    private MyShape [] shapes; //array containing all shapes
-    private int [] shapeCount; //statistic on the number of each shape
+    private MyShape [] shapes = new MyShape[numberOfShapes];
+    private int shapesCount = 0; //statistic on the number of each shape
+
+    private int x1,y1,currentX1,currentY1 = 0; //coordinates
+    private int shapeType = 0; // 0=Line,1=Oval,2=Rectangle
+    private MyShape currentShape; // array containing all the shapes
+    private Color currentColor; // the color of the shape
+    private boolean filled;
+
+    private final JLabel statusBar;
+    private String statusTxt;
+    private JFrame erorFrame; //PopUP frame when the number of shapes reach to max shapes
 
     //------constructors-------
     /**
@@ -36,28 +39,22 @@ public class DrawPanel extends DrawFrame
 
     //-------methods--------
     /**
-     * create of each shape in the shapes array a shape by random values
-     * @param numberShapes int value of user's input of number of shapes
+     * 
+     * @param shapeType the value of shape's type
+     * @param color the value of shape's color
+     * @param isFilled the value of shape if it is filled
+     * @param x1 the values of shape's coordinate
+     * @param y1 the values of shape's coordinate
+     * @param x2 the values of shape's coordinate
+     * @param y2 the values of shape's coordinate
      */
-    public void initShapes(int numberShapes)
+    public void initShapes(int shapeType, Color color, boolean isFilled, int x1, int y1, int x2, int y2)
     {
-        shapes = new MyShape[numberShapes]; //create the array of shape by user's input
-        shapeCount = new int[3];
-        
-        for(int i=0; i<numberShapes; i++)
-        {
-            //generate values for the shape:
-            int randomShapeType =  randomNumbers.nextInt(3);  // generate shape type
-            Color randomColor =  new Color(randomNumbers.nextInt(256),randomNumbers.nextInt(256), randomNumbers.nextInt(256));// generate a random color
-            boolean randomFilled = randomNumbers.nextBoolean(); //generate if the shape is filled
-            int x1 = randomNumbers.nextInt(450); // generate random coordinates-
-            int y1 = randomNumbers.nextInt(450);
-            int x2 = randomNumbers.nextInt(450);
-            int y2 = randomNumbers.nextInt(450);
 
-            shapes[i] = createShape(randomShapeType, randomColor,randomFilled, x1,y1,x2,y2); //x1,x2,y1,y2 -> coordinates
-            ++shapeCount[randomShapeType];
-        }
+        shapes[shapesCount] = createShape(shapeType, color,isFilled, x1,y1,x2,y2); 
+        shapesCount++;
+            
+    }
 
         statusText = String.format("%s: %d, %s: %d, %s: %d", "Lines", shapeCount[0], "Ovals", shapeCount[1],"Rectangles", shapeCount[2]);
     }
@@ -69,16 +66,8 @@ public class DrawPanel extends DrawFrame
      * @param coordinates the values of shape's coordinates
      * @return MyShape shape 
      */
-    private MyShape createShape(int shapeType, Color color, boolean filled, int... coordinates)
+    private MyShape createShape(int shapeType, Color color, boolean filled, int x1, int y1, int x2, int y2)
     {
-        if(coordinates.length != 4)
-            return null;
-
-        int x1 = coordinates[0];
-        int y1 = coordinates[1];
-        int x2 = coordinates[2];
-        int y2 = coordinates[3];
-
         switch (shapeType) {
             case 0: //MyLine
                 return (new MyLine(x1, y1, x2, y2, color));
